@@ -11,10 +11,11 @@ body {
 
 /* Main container for app content */
 .container {
-  max-width: 85%;
-  background-color: brown;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: brown;
 }
 
 /* Page title styling */
@@ -30,23 +31,25 @@ body {
 /* Grid layout for film cards (4 per row) */
 .film-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-/* tablets */
-@media (min-width: 600px) {
-  .film-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
-/* desktop */
-@media (min-width: 1000px) {
-  .film-list {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
+
+/*!* Tablets — 2 columns *!*/
+/*@media (min-width: 600px) {*/
+/*  .film-list {*/
+/*    grid-template-columns: repeat(2, 1fr);*/
+/*  }*/
+/*}*/
+
+/*!* Desktop — 4 columns *!*/
+/*@media (min-width: 1000px) {*/
+/*  .film-list {*/
+/*    grid-template-columns: repeat(4, 1fr);*/
+/*  }*/
+/*}*/
 
 
 /* Single film card styling */
