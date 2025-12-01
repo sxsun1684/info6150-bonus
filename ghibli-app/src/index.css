@@ -34,6 +34,21 @@ body {
   gap: 1.5rem;
 }
 
+/* tablets */
+@media (min-width: 600px) {
+  .film-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* desktop */
+@media (min-width: 1000px) {
+  .film-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
 /* Single film card styling */
 .film-card {
   background: white;
