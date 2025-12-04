@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 /**
  * Props Interface
  * ---------------
@@ -7,10 +9,13 @@
  * onSearch:  A callback triggered when the user submits the form
  *            (either by pressing Enter or clicking the Search button).
  */
+// interface Props {
+//     value: string;
+//     onChange: (value: string) => void;
+//     onSearch: () => void;
+// }
 interface Props {
-    value: string;
-    onChange: (value: string) => void;
-    onSearch: () => void;
+    onSearch: (value: string) => void; // parent receives final search text
 }
 
 /**
@@ -29,35 +34,32 @@ interface Props {
  * - Enter key and Search button both trigger the same search action.
  */
 
-export default function SearchBar({value, onChange, onSearch}: Props) {
-    return (
-        // Semantic wrapper for the search area
-        <section className="search-area">
 
-            {/* Accessible and semantic form structure */}
+export default function SearchBar({onSearch}: Props) {
+    const [input, setInput] = useState("");
+
+    return (
+        <section className="search-area">
             <form
                 className="search-form"
                 onSubmit={(e) => {
-                    e.preventDefault(); // Prevent full page reload (default form behavior)
-                    onSearch();         // Trigger search callback
+                    e.preventDefault();
+                    onSearch(input);  // send search text to App
                 }}
             >
-                {/* Search input field where the user types a query */}
                 <input
                     id="search"
                     type="text"
                     placeholder="Search films..."
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)} // Update state on each keystroke
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
                     className="search-input"
                 />
 
-                {/* Submit button to initiate the search */}
                 <button type="submit" className="search-button">
                     Search
                 </button>
             </form>
-
         </section>
     );
 }
