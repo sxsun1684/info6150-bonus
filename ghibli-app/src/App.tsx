@@ -3,6 +3,7 @@ import {getFilms} from "./api/ghibli";
 import type {Film} from "./types";
 import FilmList from "./components/FilmList";
 import SearchBar from "./components/SearchBar";
+import Footer from "./components/Footer";
 
 /**
  * App Component
@@ -60,27 +61,36 @@ function App() {
     );
 
     return (
-        // Main semantic container for the page content
-        <main className="container">
+        <>
+            <main className="container">
 
-            {/* Page title */}
-            <h1>Studio Ghibli Films</h1>
+                {/* Page title */}
+                <h1>Studio Ghibli Films</h1>
 
-            {/* Search bar component */}
-            <SearchBar
-                value={searchInput}
-                onChange={setSearchInput}
-                onSearch={() => setSearch(searchInput)} // Trigger search on button click
-            />
+                {/* Search bar component */}
+                <SearchBar
+                    value={searchInput}
+                    onChange={setSearchInput}
+                    onSearch={() => setSearch(searchInput)} // Trigger search on button click
+                />
 
-            {/* Show loading state or film list */}
-            {loading ? (
-                <p>Loading…</p>
-            ) : (
-                <FilmList films={filteredFilms}/>
-            )}
+                {/* Show loading state or film list */}
+                {loading && <p>Loading…</p>}
 
-        </main>
+                {!loading && filteredFilms.length === 0 && (
+                    <div className="no-results">
+                        <p>No films found. Try another search.</p>
+                    </div>
+
+                )}
+
+                {!loading && filteredFilms.length > 0 && (
+                    <FilmList films={filteredFilms}/>
+                )}
+
+            </main>
+            <Footer/>
+        </>
     );
 }
 
