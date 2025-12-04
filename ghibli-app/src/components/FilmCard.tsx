@@ -16,40 +16,21 @@ import type { Film } from "../types";
 
 export default function FilmCard({ film }: { film: Film }) {
     return (
-        // Semantic HTML: <article> represents an independent film item
         <article className="film-card">
+            <div className="film-card-content">
+                <img src={film.image} alt={film.title} className="film-img" />
 
-            {/* Movie poster image */}
-            <img
-                src={film.image}
-                alt={film.title}
-            />
-
-            {/* English film title */}
-            <h2>{film.title}</h2>
-
-            {/* Original Japanese title + release date */}
-            <h4>
-                {film.original_title} ({film.release_date})
-            </h4>
-
-            {/* Description paragraph */}
-            <p>{film.description}</p>
-
-            {/* Director information */}
-            <p>
-                <strong>Director:</strong> {film.director}
-            </p>
-
-            {/* Producer information */}
-            <p>
-                <strong>Producer:</strong> {film.producer}
-            </p>
-
-            {/* Rotten Tomatoes score */}
-            <p>
-                <strong>Rotten Tomatoes:</strong> {film.rt_score}
-            </p>
+                <div className="film-info">
+                    <h2>{film.title}</h2>
+                    <h4>
+                        {film.original_title} ({film.release_date})
+                    </h4>
+                    <p className="film-description">{film.description}</p>
+                    <p><strong>Director:</strong> {film.director}</p>
+                    <p><strong>Producer:</strong> {film.producer}</p>
+                    <p><strong>Rotten Tomatoes:</strong> {film.rt_score}</p>
+                </div>
+            </div>
         </article>
     );
 }
