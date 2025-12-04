@@ -49,6 +49,25 @@ async function safeJsonParse(res: Response) {
  * - typed return value (Film[])
  */
 export const getFilms = async (): Promise<Film[]> => {
+  const CACHE_KEY = "ghibli_films_cache";
+
+  /**
+   * 1. Try reading local cache first.
+   *    If cache exists, parse and return immediately (0ms load time!)
+   */
+  const cached = localStorage.getItem(CACHE_KEY);
+  if (cached) {
+    try {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed)) {
+        return parsed as Film[];
+      }
+    } catch {
+      localStorage.removeItem(CACHE_KEY); // corrupted cache
+    }
+  }
+
+  /** 2. No cache → make actual API request */
   const url = "https://ghibliapi.vercel.app/films";
 
   let res: Response;
@@ -59,7 +78,7 @@ export const getFilms = async (): Promise<Film[]> => {
     throw new Error("Network request failed. Please try again.");
   }
 
-  // Handle HTTP errors explicitly
+  /** 3. Handle HTTP errors */
   if (!res.ok) {
     if (res.status === 404) {
       throw new Error("The film resource was not found (404).");
@@ -70,13 +89,19 @@ export const getFilms = async (): Promise<Film[]> => {
     throw new Error(`Unexpected HTTP error: ${res.status}`);
   }
 
-  // Parse JSON safely
+  /** 4. Parse JSON safely */
   const data = await safeJsonParse(res);
 
-  // Validate response structure before returning
+  /** 5. Check structure */
   if (!Array.isArray(data)) {
     throw new Error("Unexpected API response format.");
   }
+
+  /**
+   * 6. Cache the result (so next reload = instant)
+   *    Cache lifetime can be adjusted (e.g., add timestamp)
+   */
+  localStorage.setItem(CACHE_KEY, JSON.stringify(data));
 
   return data as Film[];
 };
